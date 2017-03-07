@@ -23,6 +23,7 @@ public class GithubQuerier {
         List<JSONObject> response = getEvents(user);
         StringBuilder sb = new StringBuilder();
         sb.append("<div>");
+        int i = 0;
         for (JSONObject event : response) {
             String type = event.getString("type");
             String dateStr = event.getString("created_at");
@@ -30,12 +31,17 @@ public class GithubQuerier {
             Date date = sdf.parse(dateStr);
             SimpleDateFormat outFormat = new SimpleDateFormat("dd MMM, yyyy");
             String formatted = outFormat.format(date);
+
             sb.append("<h3 class=\"type\">");
             sb.append(type);
             sb.append("</h3>");
             sb.append(" on ");
             sb.append(formatted);
             sb.append("<br />");
+            sb.append("<a data-toggle=\"collapse\" href=\"#event-" + i + "\">JSON</a>");
+            sb.append("<div id=event-" + i + " class=\"collapse\" style=\"height: auto;\"> <pre>");
+            sb.append(event.toString());
+            sb.append("</pre> </div>");
         }
         sb.append("</div>");
         return sb.toString();
